@@ -17,6 +17,18 @@ jobs:
           name: Run Sparse Matrix
           command: |
             pytest test_sparse_recommender.py
+
+       - run:
+          name: Build image
+          command: |
+            docker build -t ssangras/sparse_movie_recommender:latest .
+
+       - run:
+          name: push image
+          command: |
+           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push "$DOCKER_USERNAME"/movierecommender:"${CIRCLE_SHA1}"
+
  
 workflows:
   version: 2
